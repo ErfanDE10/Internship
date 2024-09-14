@@ -1,94 +1,86 @@
-# System Health Monitoring Script
+# System Health Monitoring Service
 
-This Python-based system health monitoring script continuously tracks the performance of your system and sends alerts when critical resource usage or issues are detected. It provides real-time notifications and email alerts to keep you informed of potential bottlenecks or system slowdowns. The script is designed for automated and periodic health checks, enabling you to maintain an optimized and stable environment.
+This project is a Python-based system health monitoring tool designed to track key system performance metrics and send alerts via email and desktop notifications if any resource usage exceeds predefined thresholds. It also logs system status and can perform routine cleanup tasks like removing temporary files.
 
 ## Features
 
-- **CPU Monitoring**: Checks the CPU usage and raises an alert if it exceeds the defined threshold (80% by default).
-- **Memory Monitoring**: Monitors RAM usage, alerting when more than 80% of memory is being utilized.
-- **Disk Usage Monitoring**: Tracks the usage of disk space and alerts when usage exceeds 80%.
-- **Heavy Process Detection**: Identifies processes that consume more than 50% of CPU or memory, notifying the user.
-- **Disk I/O Monitoring**: Ensures sufficient read and write speeds of the disk to prevent bottlenecks in I/O operations.
-- **Network Monitoring**: Checks network performance to detect any slowdowns in sending or receiving data.
-- **Zombie Process Detection**: Scans for zombie processes that could affect system stability.
-- **Swap Memory Monitoring**: Alerts if swap memory usage exceeds 50%, preventing system slowdowns.
-- **Automatic Cleanup**: Cleans up temporary files to free up system resources.
-- **Logging**: All alerts and system statuses are logged to a file for later review.
+- **CPU Usage Monitoring**: Sends an alert if CPU usage exceeds 80%.
+- **Memory Usage Monitoring**: Alerts when memory usage exceeds 80%.
+- **Disk Usage Monitoring**: Monitors disk space and sends notifications if usage crosses 80%.
+- **Heavy Processes Detection**: Identifies and reports processes using more than 50% of CPU or memory.
+- **Disk I/O Monitoring**: Checks if disk read/write speeds are too slow.
+- **Network Usage Monitoring**: Monitors the network's sending/receiving speed.
+- **Zombie Processes Detection**: Detects zombie processes running in the system.
+- **Swap Memory Usage**: Alerts if swap memory usage exceeds 50%.
+- **Temporary File Cleanup**: Automatically cleans up temporary files.
 
-## Installation
+## Setup
 
-To install and run this system health monitoring script, follow these steps:
+### Prerequisites
 
-### 1. Clone the Repository
-```bash
-git clone https://github.com/your-repo/system-health-monitor.git
-cd system-health-monitor
+- **Python 3.6 or higher**: Make sure Python is installed on your system. You can download it from [here](https://www.python.org/downloads/).
+
+### Steps to Run
+
+1. **Clone the Repository**:
+   Clone this repository to your local machine:
+   ```bash
+   git clone https://github.com/your-repo/system-health-monitor.git
+   cd system-health-monitor
+   ```
+
+2. **Install Required Dependencies**:
+   This project comes with a `runner.py` script that automatically installs the required dependencies and runs the health monitoring script. You don't need to worry about manually installing packages.
+   
+   Run the following command to start the setup:
+   ```bash
+   python runner.py
+   ```
+
+   The `runner.py` script will:
+   - Check if Python is installed.
+   - Check if `pip` is installed (and install it if necessary).
+   - Install all required libraries listed in `requirements.txt`.
+   - Run the system health monitor automatically.
+
+3. **Run the System Health Monitoring Script**:
+   Once everything is set up, the script will automatically start monitoring your system resources and send alerts when necessary.
+
+### Email Configuration
+
+For email alerts to work, you need to configure the email settings in the `system_health_monitor.py` file:
+- Replace the placeholder `your_email@gmail.com` and `your_password` with your own email credentials in the following section:
+  ```python
+  EMAIL_ADDRESS = 'your_email@gmail.com'
+  EMAIL_PASSWORD = 'your_password'
+  RECIPIENT_EMAIL = 'recipient@example.com'
+  ```
+
+**Note**: If you're using Gmail, you might need to allow "Less secure apps" from your Google account settings for SMTP to work.
+
+## Project Structure
+
+```
+system-health-monitor/
+│
+├── runner.py                # Script to install dependencies and run the monitor
+├── system_health_monitor.py  # Main system monitoring script
+├── requirements.txt          # Lists required Python libraries
+├── system_health.log         # Log file (generated after running)
+└── README.md                 # This documentation
 ```
 
-### 2. Install Dependencies
-The script requires Python and a few external libraries to function. Install the dependencies with the following command:
-```bash
-pip install psutil smtplib plyer
-```
+## How It Works
 
-### 3. Configure Email Settings
-Edit the script to add your email credentials. These will be used to send alert notifications.
-
-```python
-EMAIL_ADDRESS = 'your_email@gmail.com'
-EMAIL_PASSWORD = 'your_password'
-RECIPIENT_EMAIL = 'recipient@example.com'
-```
-
-### 4. Run the Script
-Once configured, run the script using Python:
-```bash
-python system_health_monitor.py
-```
-
-The script will automatically check your system health every hour and send alerts when necessary.
-
-## Usage
-
-This script is designed to run periodically in the background, checking system resources every hour and alerting you via email and desktop notifications if any resource exceeds its threshold.
-
-- **CPU Threshold**: Default is set to 80%.
-- **Memory Threshold**: Default is 80%.
-- **Disk Usage Threshold**: Default is 80%.
-- **Heavy Processes**: Alerts for processes using more than 50% CPU or memory.
-- **Disk I/O Speeds**: Checks if read/write speed is below 50MB/s.
-- **Network**: Notifies if the sending/receiving rate is below 1MB/s.
-- **Zombie Processes**: Scans for any zombie processes affecting system stability.
-- **Swap Memory**: Sends an alert if swap usage exceeds 50%.
-
-### Logging
-
-All system health checks are logged into `system_health.log`. This file contains timestamps of each health check, allowing you to review system health history.
-
-### Notifications
-
-- **Email Alerts**: Sent when any critical issue is detected.
-- **Desktop Notifications**: Appear on your screen when thresholds are breached.
+- **Monitoring**: The system runs every hour by default, checking CPU, memory, disk, network, and more.
+- **Notifications**: If any threshold is crossed, the system will send an email and show a desktop notification to alert the user.
+- **Logging**: All system checks are logged in `system_health.log` for review.
+- **Automatic Cleanup**: Temporary files are automatically cleaned up at regular intervals.
 
 ## Customization
 
-You can modify the script to adjust the thresholds or the frequency of checks as needed:
-
-- **Change Check Frequency**: The script runs every hour by default. You can modify the `time.sleep(3600)` statement to change this interval.
-- **Thresholds**: Modify the threshold values (e.g., CPU, memory, disk) directly in the script to match your system’s needs.
-
-## Future Improvements
-
-Some potential features to add in the future:
-- Integration with a cloud service for remote monitoring.
-- Detailed reporting (monthly or weekly) sent via email.
-- Web interface for real-time monitoring.
-- Auto-resolve certain issues like restarting heavy processes or clearing cache.
+You can modify the alert thresholds or add additional system checks by editing the functions in `system_health_monitor.py`.
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
-## Contributing
-
-Feel free to contribute to this project by submitting pull requests. You can also report any issues or suggest new features through GitHub Issues.
+This project is licensed under the MIT License.
